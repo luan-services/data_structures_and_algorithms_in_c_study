@@ -22,3 +22,18 @@ int binarySearchRecursive(int arr[], int first, int last, int param) { // O ( lo
     };
 
 }
+
+int binarySearch(int arr[], int first, int last, int param) {
+    while (first <= last) {
+        int middle = (first + last) / 2;
+
+        if (arr[middle] == param) {
+            return middle; // encontrado
+        } else if (arr[middle] > param) {
+            last = middle - 1;
+        } else {
+            first = middle + 1; 
+        }
+    }
+    return -1; 
+}
