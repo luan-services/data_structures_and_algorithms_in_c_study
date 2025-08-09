@@ -3,6 +3,10 @@
 // que contém as funções para operações de entrada e saída de dados, como a função printf().
 #include <stdbool.h> // Necessário para usar 'bool', 'true' e 'false'
 
+
+// Complexidade linear é aquela que é o tempo cresce proporcionalmente ao tamanho da entrada. Se dobrar o número de elementos, o 
+// tempo dobra.
+
 // ponteiro aponta pro primeiro elemento.
 int sum(int arr[], int size) { // O (n) complexidade linear, pois possui um for que itera sobre n elementos do array
     int sum = 0;

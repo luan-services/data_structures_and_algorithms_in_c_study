@@ -3,6 +3,8 @@
 // que contém as funções para operações de entrada e saída de dados, como a função printf().
 #include <stdbool.h> // Necessário para usar 'bool', 'true' e 'false'
 
+// Complexidade linear é aquela que não muda independente do tamanho da entrada. Ela é sempre 1.
+
 // char* define que o return type da função é um ponteiro para char (precisa ser feito assim para retornar o endereço de um valor dentro da string)
 char* getFirstStudent(char arr[][20]) { // O (1) - complexidade constante, pois não importa o tamanho do array, sempre acessa o primeiro elemento
     
