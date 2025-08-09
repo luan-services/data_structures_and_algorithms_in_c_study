@@ -3,31 +3,28 @@
 // que contém as funções para operações de entrada e saída de dados, como a função printf().
 #include <stdbool.h> // Necessário para usar 'bool', 'true' e 'false'
 
-// Complexidade quadrática é aquela que é exponencial ao número de entradas, se a quantidade de entradas for 2, o tempo é 4, se for 4, o 
-// tempo é 16.
+// Complexidade logarítmica é aquela que é inversamente exponencial ao numero de entradas, a cada passo a quantidade é dividida em 2, se a
+// quantidade de entradas for 8, o numero de chamadas máximo será 4.
 
-// ao fazer m[][cols] o que eu estou definindo é que vou passar um array de inteiros cujo cada elemento é um array de 3 inteiros. ou seja, 
-// não importa o tamanho de linhas, mas o tamanho de colunas deve ser [cols] obrigatóriamente.
-// e como os dados são acessados dessa forma? ao passar um array para a função, ela recebe o ENDEREÇO inicial do array, e ao chamar 
-// arr[1][0], por exemplo, o seguinte acontece:
-
-// a função sabe que o tamanho de cada valor do array é [cols], então ela faz - endereço do array + (1 * (sizeof(int)), assim ele sabe 
-// exatamente o endereço de arr[1][x]
-// por fim, como ele fez arr[1][0], ele soma (0 *sizeof(int)) ao endereço, para finalmente chegar ao elemento [1][0] do array.
 
 // função recursiva de calculo de mdc, conhecida como algoritmo de euclides.
-int findGreatestCommomDivisor(int a, int b) { // O ( log n), pois a cada busca n se divide por 2
-    if (b == 0) {
-        return a;
+int binarySearchRecursive(int arr[], int first, int last, int param) { // O ( log n), pois a cada busca n se divide por 2
+    // se o primeiro indíce for maior que o último
+    if (first > last) {
+        return -1;
     };
+    // encontra o meio
+    int middle = first + (last - first) / 2;
 
-    int rest = a % b;
 
-    if (rest == 0) {
-        return a;
+    if (arr[middle] == param) {
+        return middle;
+    } else if ( arr[middle] > param) {
+        return binarySearchRecursive(arr, first, middle - 1, param);
     } else {
-        return findGreatestCommomDivisor(b, rest);
+        return binarySearchRecursive(arr, middle + 1, last, param);
     };
+
 }
 
 // int -> o tipo do retorno da função
@@ -35,12 +32,12 @@ int findGreatestCommomDivisor(int a, int b) { // O ( log n), pois a cada busca n
 // char *argv[] -> array contendo os argumentos, argv[0] sempre será o nome do programa, ex: argv[0] = test, argv[1] = OI, argv[2] = eu
 int main(int argc, char *argv[]) {
     
-    int matrix[3][3] = {{1, 4, 3}, {2, 3, 5}, {7, 8, 9}};
-    // calcula o tamanho em memória do array (20 bytes) e divide pelo tamanho em memória do primeiro element (int 4 bytes) = 5
-    int lineLength = sizeof(matrix) / sizeof(matrix[0]);
-    int colLenght = sizeof(matrix[0]) / sizeof(matrix[0][0]);
+    // array em ordem crescente.
+    int numbers[] = {1,2,5,7,12,15,26,32,47,78,102};
+    int length = sizeof(numbers) / sizeof(numbers[0]);
+    int search = 15;
 
-    printMatrix(lineLength, colLenght, matrix);
+    printf("Index of %i: %i", search, binarySearchRecursive(numbers, 0, length - 1, search));
 
     return 0;
 }
