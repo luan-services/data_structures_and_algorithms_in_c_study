@@ -5,7 +5,7 @@
 
 // Complexidade logarítmica é aquela que é inversamente exponencial ao numero de entradas, a cada passo a quantidade é dividida em 2, se a
 // quantidade de entradas for 8, o numero de chamadas máximo será 4.
-
+// uma das melhores, para n = 1 bilhão, gasta apenas 30 chamadas.
 
 // função recursiva de calculo de mdc, conhecida como algoritmo de euclides.
 int binarySearchRecursive(int arr[], int first, int last, int param) { // O ( log n), pois a cada busca n se divide por 2

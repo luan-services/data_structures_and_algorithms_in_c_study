@@ -5,6 +5,7 @@
 
 // Complexidade quadrática é aquela que é exponencial ao número de entradas, se a quantidade de entradas for 2, o tempo é 4, se for 4, o 
 // tempo é 16.
+// velocidade: razóavel para n < 1000, mas péssima para dados grandes
 
 // ao fazer m[][cols] o que eu estou definindo é que vou passar um array de inteiros cujo cada elemento é um array de 3 inteiros. ou seja, 
 // não importa o tamanho de linhas, mas o tamanho de colunas deve ser [cols] obrigatóriamente.

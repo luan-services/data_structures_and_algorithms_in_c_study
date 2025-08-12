@@ -6,6 +6,7 @@
 
 // Complexidade linear é aquela que é o tempo cresce proporcionalmente ao tamanho da entrada. Se dobrar o número de elementos, o 
 // tempo dobra.
+// boa para listas pequenas, tempo aumenta com muitos dados
 
 // ponteiro aponta pro primeiro elemento.
 int sum(int arr[], int size) { // O (n) complexidade linear, pois possui um for que itera sobre n elementos do array

@@ -5,13 +5,15 @@
 
 // Complexidade linearítmica geralmente é encontrada em algoritmos que dividem as entradas em partes menores (logn), processam as partes e
 // em seguida mesclam os resutados (n), gerando um desempenho melhor que n².
+// velocidade: muito rápida, usada como padrão nas bibliotecas de sort.
 
 void merge(int arr[], int left, int middle, int right) { // O (n), função que serve para juntar dois arrays
     int i, j, k;
     int n1 = middle - left + 1;
     int n2 = right - middle;
 
-    // Create temporary arrays
+    // arrays criados dentro de função alocam memória e automáticamente liberam após o fim da função, a não ser que sejam criados com malloc,
+    // aí ficam para sempre  
     int L[n1], R[n2];
 
     // Copy data to temporary arrays L[] and R[]
@@ -82,7 +84,6 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < length; i++) {
         printf("%i ", numbers[i]);
     };
-    
 
     return 0;
 }

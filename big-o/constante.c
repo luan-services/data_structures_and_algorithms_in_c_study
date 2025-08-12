@@ -4,6 +4,7 @@
 #include <stdbool.h> // Necessário para usar 'bool', 'true' e 'false'
 
 // Complexidade linear é aquela que não muda independente do tamanho da entrada. Ela é sempre 1.
+// velocidade: instantânea, para qualquer tipo de entrada
 
 // char* define que o return type da função é um ponteiro para char (precisa ser feito assim para retornar o endereço de um valor dentro da string)
 char* getFirstStudent(char arr[][20]) { // O (1) - complexidade constante, pois não importa o tamanho do array, sempre acessa o primeiro elemento
