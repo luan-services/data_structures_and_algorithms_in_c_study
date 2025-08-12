@@ -8,10 +8,24 @@
 // A stack é uma área de memória usada principalmente para variáveis locais e parâmetros de funções. A heap é uma área de memória usada 
 // para alocação dinâmica — ou seja, você decide quanto e quando alocar. Ela é controlada pelo programador.
 
-void testingPointers() {
+
+/* exemplo 3: função exemplo para testar ponteiros com ints*/
+void testingIntPointers(int a, int *b) {
+
+    a = 46;
+    *b = 120;
 
 };
 
+/* exemplo 3: função exemplo para testar ponteiros com arrays*/
+int* testingArrPointers(int arrA[], int *arrB) {
+
+    arrA[0] = 1200;
+    arrB[0] = 2000;
+
+    int arrC[2] = {100, 200};
+    return arrC;
+};
 
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
@@ -94,12 +108,42 @@ int main(int argc, char *argv[]) {
         usando o array em si, usando o índice numbers[i] ou diretamente com endereço *(numbers + i)
     */
     for (int i = 0; i < 5; i ++) {
-        printf("numbers[%i]: %i, %i, %i, %i\n", i, *(pArr + i), pArr[i], *(numbers + i), numbers[i]);
+        printf("numbers[%i]: %i, %i, %i, %i\n\n\n", i, *(pArr + i), pArr[i], *(numbers + i), numbers[i]);
     };
-    // printamos todos os elementos do array usando ponteiros
+
+    /* exemplo 3: ponteiro em funções */
+
+    int a = 40;
+    int b = 70;
+
+    /* a função abaixo pede um valor e um endereço. passamos o valor de A e o endereço de B, dentro dela, ela faz:
+        a = 46;
+        *b = 120;
+    isso fará que a seja 46 apenas dentro do escopo da função, porém modificará permanentemente o valor de b fora da função */
+    testingIntPointers(a, &b);
 
 
+    int arrA[4] = {20, 22, 24, 26};
+    int arrB[4] = {30, 33, 36, 39};
 
+    /* a função abaixo pede int arrA[], int *arrB, pode parecer diferente, mas as duas formas que o array está sendo escrito pedem a mesma
+    coisa: o endereço base do array.
+    diferente de ints e chars, é impossível passar cópias de arrays para funções, a função só aceita endereços para o array em sí.
+    
+        arrA[0] = 1200;
+        arrB[0] = 2000;
+
+    dentro dela, ela chama as duas operações, e é possível notar que o valor dos arrays muda fora do escopo também.
+
+    ela também retorna o endereço do arrC criado dentro dela, e é possivel notar que é 0, pois arrays criados dentro de escopo de funções são
+    desfeitos após a função terminar */
+
+    int *arrC = testingArrPointers(arrA, &arrB[0]); // essas duas formas estão passando a mesma coisa: o endereço para o valor inicial de cada array. &arrB[0]
+    // também pode, e deve, ser passado como arrB apenas.
+
+    printf("Valor de arrA[0]: %i Valor de arrB[0]: %i\n", arrA[0], arrB[0]);
+
+    printf("Endereço de arrC: %i", arrC); // printa 0 pois o endereço não existe já que recebe o endereço de um array criado dentro de função.
 
     return 0;
 }
