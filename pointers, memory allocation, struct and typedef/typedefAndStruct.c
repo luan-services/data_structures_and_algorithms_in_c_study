@@ -27,6 +27,9 @@ struct Book {
 // exemplo de typedef para um un long long int.
 typedef unsigned long long int ulli;
 
+// exemplo de struct com typedef
+typedef struct { int x; int y; } Point;
+
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
 // char *argv[] -> array contendo os argumentos, argv[0] sempre será o nome do programa, ex: argv[0] = test, argv[1] = OI, argv[2] = eu
@@ -48,6 +51,13 @@ int main(int argc, char *argv[]) {
 
     printf("Unsigned long long gigante: %llu\n\n", giganticNumber);
 
+    /* exemplo 1: struct com typedef */
+
+    Point coords;
+    coords.x = 1224;
+    coords.y = -2042;
+
+    printf("Coordenadas da variável 'coords': %i, %i", coords.x, coords.y);
     
     return 0;
 }
