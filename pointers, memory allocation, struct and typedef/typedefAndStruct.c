@@ -18,12 +18,14 @@ exemplo:
 struct sem typedef: struct Book bookOne; -> é preciso chamar 'struct Book'
 struct com typedef: book bookOne; -> chama apenas o tipo 'book' definido. */
 
-
+// exemplo de struct sem typedef
 struct Book {
     char title[100];
     char year[5];
 };
 
+// exemplo de typedef para um un long long int.
+typedef unsigned long long int ulli;
 
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
@@ -38,7 +40,13 @@ int main(int argc, char *argv[]) {
     strcpy(fantasyBook.title, "Blood Blockade Battlefront");
     strcpy(fantasyBook.year, "2010");
 
-    printf("Nome do livro %s Ano: %s", fantasyBook.title, fantasyBook.year);
+    printf("Nome do livro %s Ano: %s\n\n", fantasyBook.title, fantasyBook.year);
+
+    /* exemplo 2: typedef */
+
+    ulli giganticNumber = 18446744073709551615ULL;
+
+    printf("Unsigned long long gigante: %llu\n\n", giganticNumber);
 
     
     return 0;
