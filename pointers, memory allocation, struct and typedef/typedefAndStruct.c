@@ -30,6 +30,26 @@ typedef unsigned long long int ulli;
 // exemplo de struct com typedef
 typedef struct { int x; int y; } Point;
 
+// exemplo de função para struct
+void editPoint(Point point) {
+
+    point.x = 222;
+    point.y = 444;
+
+    // aqui dentro a struct copiada possui esses valores, mas lá fora a struct original mantém seus valores.
+
+};
+
+// exemplo de função para struct com ponteiro. (importante)
+void editPointWithPointer(Point *point) {
+
+    point->x = 222;
+    point->y = 444;
+
+    // muda os valores da struct original
+
+};
+
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
 // char *argv[] -> array contendo os argumentos, argv[0] sempre será o nome do programa, ex: argv[0] = test, argv[1] = OI, argv[2] = eu
@@ -51,13 +71,42 @@ int main(int argc, char *argv[]) {
 
     printf("Unsigned long long gigante: %llu\n\n", giganticNumber);
 
-    /* exemplo 1: struct com typedef */
+    /* exemplo 3: struct com typedef */
 
     Point coords;
     coords.x = 1224;
     coords.y = -2042;
 
-    printf("Coordenadas da variável 'coords': %i, %i", coords.x, coords.y);
+    printf("Coordenadas da variável 'coords': %i, %i\n\n", coords.x, coords.y);
+
     
+    /* exemplo 4: struct com typedef em ponteiros e funções */
+
+    /* structs se comportam como qualquer outro tipo que não seja array: ao passar structs para uma função, o que você está passando são os
+    valores do struct, ou seja, uma cópia exata, isso significa que mudar esses valores dentro da função não modificará fora, a não ser que
+    você passe a struct como um ponteiro.*/
+
+    Point coordsTwo;
+    coordsTwo.x = -100;
+    coordsTwo.y = -200;
+
+    editPoint(coordsTwo);
+
+    printf("Coordenadas da variável 'coordsTwo': %i, %i\n", coordsTwo.x, coordsTwo.y);
+
+    Point coordsThree;
+    coordsThree.x = -111;
+    coordsThree.y = -888;
+
+    Point *pCoordsThree = &coordsThree; // <- inicializa um ponteiro que recebe o endereço de coordsThree
+    
+    pCoordsThree->x = 65356; // <- para editar valores de um atributo dentro de um struct com ponteiros, usa-se '->' ao invés de '.'
+    
+    printf("Coordenadas da variável 'coordsThree': %i, %i\n", coordsThree.x, coordsThree.y);
+
+    editPointWithPointer(pCoordsThree); // aqui pode-se passar tanto o ponteiro pCoordsThree como o endereço de coordsThree (&coordsThree)
+    
+    printf("Coordenadas da variável 'coordsThree' (após função editPointWithPointer): %i, %i\n", coordsThree.x, coordsThree.y);
+
     return 0;
 }
