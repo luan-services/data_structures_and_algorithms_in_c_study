@@ -6,7 +6,10 @@
 #include <stdlib.h> // necessário para tratar ponteiros com funções malloc, free, calloc, realloc, etc.
 
 // A stack é uma área de memória usada principalmente para variáveis locais e parâmetros de funções. A heap é uma área de memória usada 
-// para alocação dinâmica — ou seja, você decide quanto e quando alocar. Ela é controlada pelo programador.
+// para alocação dinâmica — ou seja, você decide quanto e quando alocar. Ela é controlada pelo programador. ponteiros podem ser
+// criados tanto na stack quanto na heap, ponteiros que recebem dados e endereços de variáveis comums
+// ficam na stack, ponteiros que usam alocação dinamica com maloc() são criados na heap e precisam ser liberados
+// com free.
 
 
 /* exemplo 3: função exemplo para testar ponteiros com ints*/
