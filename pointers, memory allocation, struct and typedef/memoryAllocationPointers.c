@@ -21,6 +21,24 @@ significa que você precisa alocar e, mais importante, desalocar essa memória m
 // char *argv[] -> array contendo os argumentos, argv[0] sempre será o nome do programa, ex: argv[0] = test, argv[1] = OI, argv[2] = eu
 int main(int argc, char *argv[]) {
 
+    /* exemplo 1: int p */
+
+    // declarando um ponteiro qualquer de um inteiro
+    int *p;
+
+    // a função malloc(n) serve para alocar um espaço de memória de n bytes, ela retorna um endereço
+    // de memória com um ponteiro do tipo VOID, por conta disso é necessário fazer o casting (int *),
+    // que é modificar o tipo de ponteiro para o tipo que precisamos (no caso, int)
+    p = (int *) malloc(sizeof(int));
+
+    *p = 10;
+
+    printf("%i", *p);
+
+    // precisamos liberar o espaço de memória alocado, após usar o ponteiro.
+    free(p);
+
+
+
     return 0;
-    
-}
+};
