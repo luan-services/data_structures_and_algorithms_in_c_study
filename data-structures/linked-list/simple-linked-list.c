@@ -21,7 +21,7 @@ typedef struct Node {
 } Node;
 
 // funçao para inserir um novo elemento no início da lista, retorna um ponteiro para o novo início da lista.
-Node* insertAtStart(Node* list, char data) {
+Node* insertAtStart(Node* list, char data) { // O (1)
     // aloca memória para um novo nó
     Node* node = (Node *) malloc(sizeof(Node));
     if (node == NULL) {
@@ -30,9 +30,47 @@ Node* insertAtStart(Node* list, char data) {
     };
     // coloca o dado necessário
     node->data = data;
-    // faz o próximo endereço ser list, caso a lista esteja vazia, próximo endereço é null, caso contrário, é o primeiro valor da lista
+    // next é sempre um ponteiro, faz o próximo endereço ser list, caso a lista esteja vazia, próximo endereço é null, caso contrário, 
+    // é o primeiro valor da lista
     node->next = list;
     return node;
+};
+
+Node* insertAtEnd(Node* list, char data) { // O (n)
+    Node* node = (Node *) malloc(sizeof(Node));
+    if (node == NULL) {
+        printf("Error: Memory allocation for linked list failed.\n");
+        exit(1);
+    };
+
+    // coloca o dado no nó e aponta o nó para NULL, pois será o último nó da lista
+    node->data = data;
+    node->next = NULL;
+
+    // se a lista está vazia, retorna o nó
+    if (list == NULL) {
+        return node; // retorna o ponteiro node
+    }
+    /* precisamos criar um nó temporário que vai receber o endereço da lista, isso porque, em caso da lista ser NULL (estar vazia), a função
+    precisa retornar um ponteiro para o ínicio dela, adicionando um return na função
+    
+    já que há um return na função, obrigatoriamente precisamos guardar uma referencia para o início da lista, porque se cairmos no caso 2 (a 
+    lista possui elementos), vamos ter que percorrer todos esses elementos e retornar o endereço do elemento 1
+    
+    se fizermos isso com a referencia 'list' no final não vamos ter o endereço do elemento 1 para retornar, só o endereço do elemento 'ultimo',
+    por isso criamos temp que vai ser nosso ponteiro dummy que vai até o fim da lista. */
+
+
+    // aqui criamos um nó temporário, que vai receber o mesmo endereço que está em list (endereço do elemento 0), e irá andar até o último 
+    // endereço da lista
+    Node *temp = list;
+    // vamos até o ultimo elemento
+    while(temp->next != NULL) {
+        temp = temp->next;
+    }
+    // acessamos o valor next do último elemento e fazemos o next dele apontar para o endereço do nó. (temp->next equivale à (*temp).next)
+    temp->next = node;
+    return temp;
 };
 
 // int -> o tipo do retorno da função
@@ -40,11 +78,14 @@ Node* insertAtStart(Node* list, char data) {
 // char *argv[] -> array contendo os argumentos, argv[0] sempre será o nome do programa, ex: argv[0] = test, argv[1] = OI, argv[2] = eu
 int main(int argc, char *argv[]) {
 
-    // inicia a lista como um nó null.
+    // inicia a lista como um ponteiro para um nó NULL, é necessário que seja um ponteiro pois seu endereço precisa mudar sempre que a lista
+    // cresce ou diminui.
     Node* list = NULL;
 
     // insere o valor e retorna um ponteiro para o primeiro nó da lista.
     list = insertAtStart(list, 'A');
+
+    list = insertAtEnd(list, 'B');
 
 
 
