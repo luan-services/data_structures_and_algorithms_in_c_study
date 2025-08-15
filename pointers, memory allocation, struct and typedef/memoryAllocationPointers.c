@@ -15,6 +15,24 @@
 A heap é uma área de memória maior e mais flexível, onde a alocação dinâmica acontece. É o programador quem gerencia essa memória, o que 
 significa que você precisa alocar e, mais importante, desalocar essa memória manualmente.*/
 
+// funçao auxiliar para gerar array.
+int* generateArr(int size) {
+    // retorna um endereço NULL, caso o tamanho seja 0 ou menos
+    if (size <= 0) {
+        return NULL;
+    }
+
+    // cria um array com malloc(), ele vai ter um espaço na memória heap e não vai ser 
+    // removido com o fim da função  
+    int *pArr = (int *) malloc(size * sizeof(int));
+
+    if (pArr == NULL) {
+        printf("Erro ao alocar memória!\n");
+        return NULL;
+    }
+
+    return pArr;
+};
 
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
@@ -55,7 +73,7 @@ int main(int argc, char *argv[]) {
         return 1;
     };
 
-    printf("Array de ponteiros com malloc\n");
+    printf("Array de int com ponteiros com malloc\n");
     for (int i = 0; i < length; i ++) {
         // como visto anteriormente, arrays nada mais são que conjuntos de ponteiros de um 
         // certo tipo, ordenados, e fazer pArr[i] é o mesmo que *(pArr + i), que significa
@@ -64,7 +82,7 @@ int main(int argc, char *argv[]) {
         printf("pArr[%i] - Endereço: %i Valor: %i\n", i, &pArr[i], pArr[i]);
     };
     free(pArr);
-    printf("\nArray de ponteiros liberado com sucesso.\n\n");
+    printf("\nArray de int com ponteiros liberado com sucesso.\n\n");
 
     /* exemplo 2: int array com calloc() */
 
@@ -80,12 +98,12 @@ int main(int argc, char *argv[]) {
         printf("Erro ao alocar memória!\n");
         return 1;
     };
-    printf("Array de ponteiros com calloc\n");
+    printf("Array de int com ponteiros com calloc\n");
     for (int i = 0; i < length; i ++) {
         printf("pArrTwo[%i] - Endereço: %i Valor: %i\n", i, &pArrTwo[i], pArrTwo[i]);
     };
     free(pArrTwo);
-    printf("\nArray de ponteiros liberado com sucesso.\n\n");
+    printf("\nArray de int com ponteiros liberado com sucesso.\n\n");
 
     /* exemplo 3: realloc() */
     
@@ -98,7 +116,7 @@ int main(int argc, char *argv[]) {
         return 1;
     };
 
-    printf("Array de ponteiros antes de aumentar\n");
+    printf("Array de int com ponteiros antes de aumentar\n");
     for (int i = 0; i < 3; i++) {
         pArrThree[i] = (i * 1) + 2;
         printf("pArrThree[%i] - Endereço: %i Valor: %i\n", i, &pArrThree[i], pArrThree[i]);
@@ -117,9 +135,9 @@ int main(int argc, char *argv[]) {
         return 1;
     ;}
 
-    printf("\nArray de ponteiros após aumentar\n");
+    printf("\nArray de int com ponteiros após aumentar\n");
     // Agora, o array tem 5 posições. Vamos preencher as novas.
-    for (int i = 3; i < 5; i++) {
+    for (int i = 0; i < 5; i++) {
         if (i < 3) {
             printf("pArrThree[%i] - Endereço: %i Valor: %i\n", i, &pArrThree[i], pArrThree[i]);
         } else {
@@ -129,7 +147,22 @@ int main(int argc, char *argv[]) {
     };
 
     free(pArrThree);
-    printf("\nArray de ponteiros pArrThree liberado com sucesso.\n\n");
+    printf("\nArray de int com ponteiros pArrThree liberado com sucesso.\n\n");
+
+    /* exemplo 4: arrays criados em funções que se mantém */
+
+    length = 4;
+    int *pArrFour = generateArr(length);
+
+    
+    printf("Array gerado em função\n");
+    for (int i = 0; i < length; i++) {
+        pArrFour[i] = (i * 1) + 5;
+        printf("pArrFour[%i] - Endereço: %i Valor: %i\n", i, &pArrFour[i], pArrFour[i]);
+    };
+    printf("\nArray de int com ponteiros pArrThree liberado com sucesso.\n\n");
+    free(pArrFour);
+
 
     return 0;
 };
