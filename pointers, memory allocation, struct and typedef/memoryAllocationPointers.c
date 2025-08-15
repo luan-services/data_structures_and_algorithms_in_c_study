@@ -33,10 +33,26 @@ int main(int argc, char *argv[]) {
 
     *p = 10;
 
-    printf("%i", *p);
+    printf("Ponteiro com malloc(), endereço: %i valor: %i\n\n", p, *p);
 
     // precisamos liberar o espaço de memória alocado, após usar o ponteiro.
     free(p);
+
+    /* exemplo 2: int array */
+    int length = 5;
+    // alocamos memória para 5 ints.
+    int *pArr = (int *) malloc(sizeof(int) * length);
+
+    printf("Array de ponteiros com malloc\n");
+    for (int i = 0; i < length; i ++) {
+        // como visto anteriormente, arrays nada mais são que conjuntos de ponteiros de um 
+        // certo tipo, ordenados, e fazer pArr[i] é o mesmo que *(pArr + i), que significa
+        // pular i endereços de x em x bytes (sendo x o tipo do array).
+        pArr[i] = (i * 1) + 3;
+        printf("pArr[%i] - Endereço: %i Valor: %i\n", i, &pArr[i], pArr[i]);
+    };
+    free(pArr);
+    printf("\nArray de ponteiros liberado com sucesso.");
 
 
 
