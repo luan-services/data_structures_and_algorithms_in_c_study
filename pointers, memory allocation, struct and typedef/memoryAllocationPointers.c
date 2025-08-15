@@ -31,9 +31,15 @@ int main(int argc, char *argv[]) {
     // que é modificar o tipo de ponteiro para o tipo que precisamos (no caso, int)
     p = (int *) malloc(sizeof(int));
 
+    // proteção para caso por algum motivo a memória não seja alocada
+    if (p == NULL) {
+        printf("Erro ao alocar memória!\n");
+        return 1;
+    };
+
     *p = 10;
 
-    printf("Ponteiro com malloc(), endereço: %i valor: %i\n\n", p, *p);
+    printf("Ponteiro com malloc()\nEndereço: %i valor: %i\n\n", p, *p);
 
     // precisamos liberar o espaço de memória alocado, após usar o ponteiro.
     free(p);
@@ -42,6 +48,12 @@ int main(int argc, char *argv[]) {
     int length = 5;
     // alocamos memória para 5 ints.
     int *pArr = (int *) malloc(sizeof(int) * length);
+
+    // proteção para caso por algum motivo a memória não seja alocada
+    if (pArr == NULL) {
+        printf("Erro ao alocar memória!\n");
+        return 1;
+    };
 
     printf("Array de ponteiros com malloc\n");
     for (int i = 0; i < length; i ++) {
@@ -52,9 +64,72 @@ int main(int argc, char *argv[]) {
         printf("pArr[%i] - Endereço: %i Valor: %i\n", i, &pArr[i], pArr[i]);
     };
     free(pArr);
-    printf("\nArray de ponteiros liberado com sucesso.");
+    printf("\nArray de ponteiros liberado com sucesso.\n\n");
+
+    /* exemplo 2: int array com calloc() */
+
+    length = 10;
+
+    // calloc é muito parecido com malloc(), porém ele inicializa ints com 0, e chars com 
+    // \0 'string vazia', em malloc() esses espaços são inciados com 'lixo' e você tem que
+    // dar um valor para eles antes de chamar.  
+    int *pArrTwo = (int *) calloc(length, sizeof(int));
+
+    // proteção para caso por algum motivo a memória não seja alocada
+    if (pArrTwo == NULL) {
+        printf("Erro ao alocar memória!\n");
+        return 1;
+    };
+    printf("Array de ponteiros com calloc\n");
+    for (int i = 0; i < length; i ++) {
+        printf("pArrTwo[%i] - Endereço: %i Valor: %i\n", i, &pArrTwo[i], pArrTwo[i]);
+    };
+    free(pArrTwo);
+    printf("\nArray de ponteiros liberado com sucesso.\n\n");
+
+    /* exemplo 3: realloc() */
+    
+    // inicialmente aloca 3 inteiros
+    int *pArrThree = (int *) malloc(3 * sizeof(int)); 
+
+    // proteção para caso por algum motivo a memória não seja alocada
+    if (pArrThree == NULL) {
+        printf("Erro ao realocar memória!\n");
+        return 1;
+    };
+
+    printf("Array de ponteiros antes de aumentar\n");
+    for (int i = 0; i < 3; i++) {
+        pArrThree[i] = (i * 1) + 2;
+        printf("pArrThree[%i] - Endereço: %i Valor: %i\n", i, &pArrThree[i], pArrThree[i]);
+    };
 
 
+    // realloc serve para criar mais espaço no ponteiro, é necessário que o casting (int *)
+    // seja o mesmo do anterior, e é preciso fazer p = realloc porque o realloc pode mudar
+    // TODO o array de endereço caso não haja espaço no endereço original, por isso é preciso
+    // usar o return dele para o novo endereço.
+    pArrThree = (int *) realloc(pArrThree, 5 * sizeof(int));
+
+    // proteção para caso por algum motivo a memória não seja alocada
+    if (pArrThree == NULL) {
+        printf("Erro ao realocar memória!\n");
+        return 1;
+    ;}
+
+    printf("\nArray de ponteiros após aumentar\n");
+    // Agora, o array tem 5 posições. Vamos preencher as novas.
+    for (int i = 3; i < 5; i++) {
+        if (i < 3) {
+            printf("pArrThree[%i] - Endereço: %i Valor: %i\n", i, &pArrThree[i], pArrThree[i]);
+        } else {
+            pArrThree[i] = (i * 2) + 2;
+            printf("pArrThree[%i] - Endereço: %i Valor: %i\n", i, &pArrThree[i], pArrThree[i]);
+        };
+    };
+
+    free(pArrThree);
+    printf("\nArray de ponteiros pArrThree liberado com sucesso.\n\n");
 
     return 0;
 };
