@@ -13,6 +13,14 @@ que aponta para o próximo nó. A lista só pode ser percorrida em uma única di
 nó aponta para NULL.
 */
 
+/*
+no caso abaixo a lista se inicia com null, sendo necesário fazer as funções de inserção serem capazes de lidar com o caso da lista ser NULL,
+ou seja, nesses casos, as funções precisam retornar o nó.
+
+se houvesse uma função para iniciar a lista com algum valor, ex: createList(char value); as funções de inserção poderiam retornar void, apenas
+usando esse endereço inicial e fazendo as modificações.
+*/
+
 // em primeiro lugar, define-se o 'objeto' nó.
 typedef struct Node {
     char data; // data pode ser qualquer tipo, aqui faremos com char. 
@@ -111,6 +119,97 @@ Node* insertAtIndex(Node* list, char data, int index) {
     return list;
 };
 
+Node* removeValue(Node* list, char value) {
+    Node* temp = list;
+
+    // caso 1: lista vazia
+    if (temp == NULL) {
+        return list;
+    };
+
+    // caso 2: o nó a ser removido é o primeiro da lista
+    if (temp->data == value) {
+        list = temp->next;
+        free(temp);
+        return list; // retorna o novo início da lista
+    }
+
+    // caso 3: O nó a ser removido está em algum lugar no meio ou no fim
+    while (temp->next != NULL) { // O (N), enquanto o próximo nó existir, checa se ele contém o valor a er removido
+        if (temp->next->data == value) { // caso o próximo nó seja o valor
+            Node* tempRemove = temp->next; // cria um nó temporário para receber o nó a ser removido
+            temp->next = tempRemove->next; // pega o endereço next do nó atual e faz ele ser o next do próximo nó
+            free(tempRemove); // libera o nó a ser removido;
+            return list;
+        };
+        // caso o próximo nó não seja o valor, avança
+        temp = temp->next; 
+    };
+
+    // se o valor não foi encontrado em nenhum caso.
+    return list; // retorna a lista inalterada
+};
+
+Node* removeAll(Node* list, char value) {
+    Node* current = list;
+    Node* previous = NULL;
+    
+    // percorre a lista para remover todas as ocorrências
+    while (current != NULL) {
+        if (current->data == value) {
+
+            if (previous == NULL) { // caso 1: nó a ser removido é o primeiro da lista
+                list = current->next; // primeiro da lista passa a ser o segundo
+                free(current); // libera o nó a ser removido
+                current = list;  // passa pro próximo nó e continua o loop
+            } else { // caso 2: nó a ser removido está no meio ou fim da lista
+                previous->next = current->next; // pega o anterior e aponta para o próximo do nó a ser removido
+                free(current); // libera o nó a ser removido
+                current = previous->next; // passa pro próximo nó e continua o loop
+            }
+        } else { // se o nó atual não for o que queremos remover, só avança
+            previous = current;
+            current = current->next;
+        }
+    }
+    return list;
+}
+
+Node* removeAtIndex(Node* list, int index) {
+    Node* temp = list;
+
+    // caso 1: a lista está vazia
+    if (temp == NULL) { // caso o índice 0 seja NULL, a lista está vazia
+        return list;
+    }
+
+    // caso 2: O nó a ser removido é o primeiro da lista (index 0)
+    if (index == 0) {
+
+        list = temp->next; // nó 0 recebe o endereço do nó 1
+        free(temp); // libera o nó a ser removido
+        return list;
+    };
+    
+    int count = 0;
+
+    // caso 2: o nó a ser removido está em alguma outra posição
+    while (temp != NULL && index > count + 1) {
+        count++;
+        temp = temp->next;
+    }
+
+    // caso o índice a ser removido seja maior que a lista;
+    if (temp == NULL || temp->next == NULL) {
+        return list;
+    };
+
+    Node* tempRemove = temp->next;
+    temp->next = tempRemove->next;
+    free(tempRemove);
+    return list;
+};
+
 void printList(Node* list) {
 
     Node *temp;
@@ -144,7 +243,7 @@ void printByIndex(Node* list, int index) {
     printf("%c\n", temp->data); // printando char, é necessário mudar baseado no tipo do dado
 };
 
-char getValueByIndex(Node* list, int index) {
+char getValueAtIndex(Node* list, int index) {
 
     Node *temp = list;
 
@@ -181,6 +280,13 @@ int getValueIndex(Node* list, char value) {
     printf("Error: Value not found on list.\n");
 };
 
+void clearList(Node* list) {
+    while (list != NULL) {
+        Node* temp = list;
+        list = list->next;
+        free(temp);
+    };
+};
 
 
 // int -> o tipo do retorno da função
@@ -197,14 +303,41 @@ int main(int argc, char *argv[]) {
     list = insertAtEnd(list, 'B');
     list = insertAtIndex(list, 'C', 2);
     list = insertAtIndex(list, 'X', 1);
-
-    // printa a lista toda
+    list = insertAtEnd(list, 'B'); // adicionando outro 'B' para testar removeAll
+    list = insertAtEnd(list, 'B'); // adicionando outro 'B' para testar removeAll
+    
+    printf("List: ");
     printList(list);
-    // printa o valor no índice 3
+    printf("List index 3: ");
     printByIndex(list, 3);
 
+    // search by index
+    char ch = getValueAtIndex(list, 2);
+    printf("\nValue at Index 2: %c\n", ch); 
+
+    // search index by char
+    int index = getValueIndex(list, 'X');
+    printf("Index of first occurrence of 'X': %d\n", index); 
+    index = getValueIndex(list, 'B');
+    printf("Index of first occurrence of 'B': %d\n", index); 
+    
+
+    list = removeValue(list, 'X');
+    printf("\nList after removing value 'X': ");
+    printList(list);
+
+    list = removeAtIndex(list, 2);
+    printf("List after removing value at index 2: ");
+    printList(list); 
+
+    list = removeAll(list, 'B');
+    printf("List after removing all occurrences of 'B': ");
+    printList(list); 
+
+    
+    clearList(list);
+    printf("\nList memory cleared.");
 
     return 0;
 
-    // 
 }
