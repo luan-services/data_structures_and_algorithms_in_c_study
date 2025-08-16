@@ -70,8 +70,80 @@ Node* insertAtEnd(Node* list, char data) { // O (n)
     }
     // acessamos o valor next do último elemento e fazemos o next dele apontar para o endereço do nó. (temp->next equivale à (*temp).next)
     temp->next = node;
-    return temp;
+    return list;
 };
+
+Node* insertAtIndex(Node* list, char data, int index) {
+    // cria um nó e insere o valor dentro
+    Node* node = (Node *) malloc(sizeof(Node));
+    if (node == NULL) {
+        printf("Error: Memory allocation for linked list failed.\n");
+        exit(1);
+    };
+    node->data = data; // é o mesmo que (*node).data
+
+    if (index == 0) { // caso o indíce seja 0 faz a inserção padrão no inicio da lista O (1)
+        node->next = list;
+        return node;
+    };
+
+    // ponteiro temporário que recebe o endereço que está em list
+    Node* temp = list;
+    int count = 0;
+
+    // garante que se temp seja NULL (ou seja, a lista seja vazia, ou o indice seja maior que a qtd de nós da lista) o while vai parar
+    // o nó anterior ao indice necessário precisa apontar para o nó atual, por isso o while para quando count é 1 à menos que index 
+    while (temp != NULL && index > count + 1) { // O (N)
+        temp = temp -> next;
+        count ++;
+    };
+
+    if (temp == NULL) { // garante que caso o indíce seja maior que a quantidade de nós, a função falhe.
+        printf("Error: Insert index out of linked list bounds.\n");
+        free(node);
+        return list;
+    };
+
+    // nó criado aponta para o próximo de nó indice - 1, nó indice - 1 aponta para nó criado
+    node->next = temp->next;
+    temp->next = node;
+
+    return list;
+};
+
+void printList(Node* list) {
+
+    Node *temp;
+    temp = list;
+
+    while (temp != NULL) {  // O (N)
+        printf("%c ", temp->data); // printando chars, é necessário mudar baseado no tipo do dado
+        temp = temp->next;
+    };
+
+    printf("\n");
+};
+
+void printListIndex(Node* list, int index) {
+
+    Node *temp;
+    temp = list;
+
+    int count = 0;
+
+    while (temp != NULL && index > count ) {  // O (N)
+        temp = temp->next;
+        count ++;
+    };
+    
+    if (temp == NULL) { // garante que caso o indíce seja maior que a quantidade de nós, a função falhe.
+        printf("Error: Print index out of linked list bounds.\n");
+        return ;
+    };
+
+    printf("%c\n", temp->data); // printando char, é necessário mudar baseado no tipo do dado
+};
+
 
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
@@ -82,11 +154,16 @@ int main(int argc, char *argv[]) {
     // cresce ou diminui.
     Node* list = NULL;
 
-    // insere o valor e retorna um ponteiro para o primeiro nó da lista.
+    // insere o valor e retorna um ponteiro para o primeiro nó da lista
     list = insertAtStart(list, 'A');
-
     list = insertAtEnd(list, 'B');
+    list = insertAtIndex(list, 'C', 2);
+    list = insertAtIndex(list, 'X', 1);
 
+    // printa a lista toda
+    printList(list);
+    // printa o valor no índice 3
+    printListIndex(list, 3);
 
 
     return 0;
