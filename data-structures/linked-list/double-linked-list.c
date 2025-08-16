@@ -94,6 +94,61 @@ Node* insertAtEnd(Node* list, char data) { // O (n)
     return list;
 };
 
+Node* insertAtIndex(Node* list, char data, int index) {
+    // cria um nó e insere o valor dentro
+    Node* node = (Node *) malloc(sizeof(Node));
+    if (node == NULL) {
+        printf("Error: Memory allocation for linked list failed.\n");
+        exit(1);
+    };
+    node->data = data; // é o mesmo que (*node).data
+
+    if (index == 0) { // caso o indíce seja 0 faz a inserção padrão no inicio da lista O (1)
+
+        // prev é NULL pois node será o primeiro valor
+        node->prev = NULL;
+        node->next = list;
+
+        // se a lista não for NULL, muda o prev do primeiro elemento da lista para node;
+        if (list != NULL) {
+            list->prev = node;
+        };
+
+        return node;
+    };
+
+    // ponteiro temporário que recebe o endereço que está em list
+    Node* temp = list;
+    int count = 0;
+
+    // garante que se temp seja NULL (ou seja, a lista seja vazia, ou o indice seja maior que a qtd de nós da lista) o while vai parar
+    // o nó anterior ao indice necessário precisa apontar para o nó atual, por isso o while para quando count é 1 à menos que index 
+    while (temp != NULL && index > count) { // O (N)
+        temp = temp -> next;
+        count ++;
+    };
+
+    if (temp == NULL) { // garante que caso o indíce seja maior que a quantidade de nós, a função falhe.
+        printf("Error: Insert index out of linked list bounds.\n");
+        free(node);
+        exit(1);
+    };
+
+    // o próximo elemento do elemento anterior de temp vira node
+    temp->prev->next = node;
+
+    // o elemento anterior de node vira o anterior de temp
+    node->prev = temp->prev;
+    // o proximo elemento de node vira temp
+    node->next = temp;
+    
+    // o elemento anterior de temp, vira node
+    temp->prev = node;
+    
+
+    return list;
+};
+
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
 // char *argv[] -> array contendo os argumentos, argv[0] sempre será o nome do programa, ex: argv[0] = test, argv[1] = OI, argv[2] = eu
@@ -106,7 +161,10 @@ int main(int argc, char *argv[]) {
     // insere o valor e retorna um ponteiro para o primeiro nó da lista
     list = insertAtStart(list, 'A');
     list = insertAtEnd(list, 'B');
-    
+    list = insertAtIndex(list, 'C', 2);
+    list = insertAtIndex(list, 'X', 1);
+    list = insertAtEnd(list, 'B'); // adicionando outro 'B' para testar removeAll
+    list = insertAtEnd(list, 'B'); // adicionando outro 'B' para testar removeAll
     
 
     return 0;
