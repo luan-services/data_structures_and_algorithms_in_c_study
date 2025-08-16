@@ -311,11 +311,11 @@ int main(int argc, char *argv[]) {
     printf("List index 3: ");
     printByIndex(list, 3);
 
-    // search by index
+    // pesquisa por indice
     char ch = getValueAtIndex(list, 2);
     printf("\nValue at Index 2: %c\n", ch); 
 
-    // search index by char
+    // pesquisa por valor
     int index = getValueIndex(list, 'X');
     printf("Index of first occurrence of 'X': %d\n", index); 
     index = getValueIndex(list, 'B');
