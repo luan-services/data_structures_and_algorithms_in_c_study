@@ -101,7 +101,7 @@ Node* insertAtIndex(Node* list, char data, int index) {
     if (temp == NULL) { // garante que caso o indíce seja maior que a quantidade de nós, a função falhe.
         printf("Error: Insert index out of linked list bounds.\n");
         free(node);
-        return list;
+        exit(1);
     };
 
     // nó criado aponta para o próximo de nó indice - 1, nó indice - 1 aponta para nó criado
@@ -124,7 +124,7 @@ void printList(Node* list) {
     printf("\n");
 };
 
-void printListIndex(Node* list, int index) {
+void printByIndex(Node* list, int index) {
 
     Node *temp;
     temp = list;
@@ -138,11 +138,49 @@ void printListIndex(Node* list, int index) {
     
     if (temp == NULL) { // garante que caso o indíce seja maior que a quantidade de nós, a função falhe.
         printf("Error: Print index out of linked list bounds.\n");
-        return ;
+        exit(1);
     };
 
     printf("%c\n", temp->data); // printando char, é necessário mudar baseado no tipo do dado
 };
+
+char getValueByIndex(Node* list, int index) {
+
+    Node *temp = list;
+
+    int count = 0;
+
+    while (temp != NULL && index > count ) {  // O (N)
+        temp = temp->next;
+        count ++;
+    };
+    
+    if (temp == NULL) { // garante que caso o indíce seja maior que a quantidade de nós, a função falhe.
+        printf("Error: Print index out of linked list bounds.\n");
+        exit(1);
+    };
+
+    return temp->data;
+};
+
+int getValueIndex(Node* list, char value) {
+
+    Node *temp = list;
+
+    int count = 0;
+
+    while (temp != NULL) {  // O (N)
+        if (temp->data == value) {
+            return count;
+        }
+        temp = temp->next;
+        count ++;
+    };
+    
+    // caso temp seja null o valor não foi encontrado
+    printf("Error: Value not found on list.\n");
+};
+
 
 
 // int -> o tipo do retorno da função
@@ -163,8 +201,10 @@ int main(int argc, char *argv[]) {
     // printa a lista toda
     printList(list);
     // printa o valor no índice 3
-    printListIndex(list, 3);
+    printByIndex(list, 3);
 
 
     return 0;
+
+    // 
 }
