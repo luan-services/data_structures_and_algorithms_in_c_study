@@ -19,6 +19,8 @@ ponteiro tail (ou cauda): É comum manter um ponteiro para o último nó (tail o
 a partir dele (tail->next).
 */
 
+////////////////////////////////////////////////////// preciso modificar
+
 // em primeiro lugar, define-se o 'objeto' nó.
 typedef struct Node {
     char data; // data pode ser qualquer tipo, aqui faremos com char. 
