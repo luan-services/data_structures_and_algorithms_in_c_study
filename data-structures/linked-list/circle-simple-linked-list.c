@@ -72,61 +72,101 @@ Node* insertAtEnd(Node* tail, char data) { // O (n)
     return node; // retorna node, que é o novo ultimo elemento
 };
 
+Node* insertAtIndex(Node* tail, char data, int index) {
+    // cria um nó e insere o valor dentro
+    Node* node = (Node *) malloc(sizeof(Node));
+    if (node == NULL) {
+        printf("Error: Memory allocation for linked list failed.\n");
+        exit(1);
+    };
+
+    node->data = data; // é o mesmo que (*node).data
+
+
+    // caso 1: a lista está vazia
+    if (tail == NULL) {
+        printf("Error: Insert index out of linked list bounds.\n");
+        free(node);
+        exit(1);
+    };
+
+    // caso 2: inserir no index 0
+    if (index == 0) { // caso o indíce seja 0 faz a inserção padrão no inicio da lista O (1)
+        node->next = tail->next;
+        tail->next = node;
+        return tail;
+    };
+
+
+    // ponteiro temporário que recebe o endereço do elemento 0
+    Node* temp = tail->next;
+    int count = 0;
+
+    // caso 3: inserir no meio ou fim
+    while (temp != tail && index - 1 > count) { // O (N)
+        temp = temp -> next;
+        count ++;
+    };
+
+    // caso tenha chegado na tail e count ainda não for = index 
+    if (temp == tail && index - 1 > count) { // garante que caso o indíce seja maior que a quantidade de nós, a função falhe.
+        printf("Error: Insert index out of linked list bounds.\n");
+        free(node);
+        exit(1);
+    };
+
+    // nó criado aponta para o próximo de nó indice - 1, nó indice - 1 aponta para nó criado
+    node->next = temp->next;
+    temp->next = node;
+
+    // caso 3.1: inserção no fim, o index é o último da lista, node passa a ser tail
+    if (index - 1 == count) {
+        return node;
+    };
+
+    // caso 3.2: inserção no meio, retorna tail
+    return tail;
+};
+
 Node* removeValue(Node* tail, char value) {
+
     if (tail == NULL) {
         return NULL;
-    }
+    };
 
-    Node* head = tail->next;
-    Node* current = head;
-    Node* previous = tail;
-    bool found = false;
+    // pega o primeiro valor da lista;
+    Node* temp = tail->next;
+    Node* tempPrev = tail;
 
-    do {
-        if (current->data == value) {
-            found = true;
-            break;
-        }
-        previous = current;
-        current = current->next;
-    } while (current != head);
-
-    if (!found) {
-        printf("Valor '%c' não encontrado na lista.\n", value);
-        return tail;
-    }
-
-    // Se o valor estiver no único nó da lista
-    if (current == head && previous == tail) {
-        free(current);
+    // caso 0: lista com apenas um nó e o valor é o nó
+    if (temp == tail && tail->data == value) {
+        free(tail);
         return NULL;
-    }
+    };
 
-    // Se o valor estiver no primeiro nó (head)
-    if (current == head) {
-        tail->next = current->next;
-        free(current);
+    while(temp != tail && temp->data != value) {
+        tempPrev = temp;
+        temp = temp->next;
+    };
+
+    // caso 1.1: chegou ao fim e não achou o valor
+    if (temp == tail && temp->data != value) {
         return tail;
+    } else if (temp != tail && temp->data == value) { // caso 2.2: não chegou ao fim e achou o valor
+        tempPrev->next = temp->next;
+        free(temp);
+        return tail;
+    } else { // caso 2.3: chegou ao fim e achou o valor
+        tempPrev->next = tail->next;
+        free(temp);
+        // Se após a remoção só resta um nó, retorna NULL
+        if (tempPrev == tempPrev->next) {
+            return NULL;
+        }
+        return tempPrev;
     }
-
-    // Se o valor estiver no último nó (tail)
-    if (current == tail) {
-        previous->next = head;
-        free(current);
-        return previous; // O anterior se torna o novo tail
-    }
-
-    // Se o valor estiver no meio da lista
-    previous->next = current->next;
-    free(current);
-    return tail;
 }
 
-/*
- * Função para remover um nó em um índice específico da lista.
- * Recebe o ponteiro para o último nó (tail) e o índice a ser removido.
- * Retorna o ponteiro para o novo último nó (tail).
- */
 Node* removeAtIndex(Node* tail, int index) {
     if (tail == NULL) {
         printf("Erro: A lista está vazia.\n");
@@ -189,9 +229,9 @@ void printList(Node* tail) {
     printf("\n");
 }
 
-Node* clearList(Node* tail) {
+void clearList(Node* tail) {
     if (tail == NULL) {
-        return NULL;
+        return;
     }
     
     Node* current = tail->next;
@@ -204,7 +244,6 @@ Node* clearList(Node* tail) {
         free(temp);
     } while (current != head);
 
-    return NULL;
 }
 
 // int -> o tipo do retorno da função
@@ -218,39 +257,27 @@ int main() {
     // cresce ou diminui.
     Node* list = NULL;
 
-    printf("Inserindo elementos no início e fim da lista.\n");
+    
     list = insertAtStart(list, 'A');
     list = insertAtEnd(list, 'B');
     list = insertAtEnd(list, 'C');
     list = insertAtEnd(list, 'D');
-
-    printf("Lista: ");
-    printList(list); // Saída: A B C D
-
-    printf("\nInserindo 'X' no início.\n");
     list = insertAtStart(list, 'X');
-    printf("Lista: ");
-    printList(list); // Saída: X A B C D
 
-    printf("\nRemovendo valor 'C'.\n");
+    printf("List: ");
+    printList(list); 
+
+    
+    printf("\nList after removing value 'C': ");
     list = removeValue(list, 'C');
-    printf("Lista: ");
-    printList(list); // Saída: X A B D
-
-    printf("\nRemovendo valor do índice 2.\n");
-    list = removeAtIndex(list, 2);
-    printf("Lista: ");
-    printList(list); // Saída: X A D
-
-    printf("\nTentando remover um valor que não existe ('Z').\n");
-    list = removeValue(list, 'Z');
-    printf("Lista: ");
-    printList(list); // Saída: X A D
-
-    printf("\nLimpando a lista.\n");
-    list = clearList(list);
-    printf("Lista depois de ser limpa: ");
     printList(list);
 
+    list = removeAtIndex(list, 2);
+    printf("\nList after removing value at index 2: ");
+    printList(list); 
+
+    clearList(list);
+    printf("\nList memory cleared.");
+    
     return 0;
 };
