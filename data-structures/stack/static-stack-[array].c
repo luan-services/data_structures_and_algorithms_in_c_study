@@ -77,6 +77,55 @@ int main(int argc, char *argv[]) {
     int top = -1; // precisa criar um int para sinalizar qual index do array é o topo da lista (o index do último valor inserido)
     // o topo precisa sendo -1 indica que não há nenhum valor adicionado à pilha
 
+    printf("Testing stack -> 1 = yes | 0 = no\n\n");
+    printf("Stack is empty? %i\n", isEmpty(top));
+    
+    printf("Pushing 13 to the stack...\n");
+    push(stack, 13, &top, size);
+
+    printf("Pushing 27 to the stack...\n");
+    push(stack, 27, &top, size);
+
+    printf("Current top (peek()) of stack (last value): %i\n", peek(stack, top));
+
+    printf("Removing (pop()) last value from the stack... \n");
+    pop(&top);
+    
+    printf("Current top (peek()) of stack (last value): %i\n", peek(stack, top));
+
+    printf("Pushing 7 to the stack...\n");
+    push(stack, 7, &top, size);
+
+    printf("Pushing 21 to the stack...\n");
+    push(stack, 21, &top, size);
+
+    printf("Pushing 4 to the stack...\n");
+    push(stack, 4, &top, size);
+
+    printf("Pushing 72 to the stack...\n");
+    push(stack, 72, &top, size);
+
+    printf("Pushing 9 to the stack...\n");
+    push(stack, 9, &top, size);
+
+    printf("Pushing 0 to the stack...\n");
+    push(stack, 0, &top, size);
+
+    printf("Pushing 14 to the stack...\n");
+    push(stack, 14, &top, size);
+
+    printf("Pushing 60 to the stack...\n");
+    push(stack, 60, &top, size);
+    
+    printf("Pushing 103 to the stack...\n");
+    push(stack, 103, &top, size);
+
+    printf("Stack is full? %i\n", isFull(top, size));
+
+    printf("Pushing 666 to the stack...\n");
+    push(stack, 666, &top, size);
+
+
     return 0;
 
 }
