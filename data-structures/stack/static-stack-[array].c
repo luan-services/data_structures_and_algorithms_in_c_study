@@ -22,10 +22,33 @@ a pilha do exemplo abaixo é feita num array, ou seja, é uma pilha estática, e
 tem tamanho variável, existe um limite para o tamanho dela que precisa ser pré-definido, e caso ela não ocupe todo o espaço, isso causa um
 disperdício de alocação de memória */
 
+int isFull(int top, int size) {
+    if (top + 1 == size ) {
+        return 1;
+    }
+    return 0;
+}
+
+void push(int* stack, int data, int top, int size) {
+    if (isFull(top, size)) {
+        printf("Erro: Estouro da pilha (Stack Overflow)\n");
+        return;
+    };
+    top = top + 1;
+    *(stack + top) = data;
+};
+
+
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
 // char *argv[] -> array contendo os argumentos, argv[0] sempre será o nome do programa, ex: argv[0] = test, argv[1] = OI, argv[2] = eu
 int main(int argc, char *argv[]) {
+
+    int size = 10; // define um tamanho para a stack;
+    int stack[size]; // se implementa dessa forma, criando um array vazio com espaço para n elementos.
+    int top = -1; // precisa criar um int para sinalizar qual index do array é o topo da lista (o index do último valor inserido)
+    // o topo precisa sendo -1 indica que não há nenhum valor adicionado à pilha
+
 
     return 0;
 
