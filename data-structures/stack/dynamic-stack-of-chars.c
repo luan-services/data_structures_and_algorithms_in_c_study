@@ -85,23 +85,65 @@ void freeStack(Stack* stack) {
 
 /* FUNÇÕES UTEIS COM STACK */
 
-void reverseString(char *str) {
+// função para inverter string
+void reverseString(char *str) { // O (n)
     char* temp = str;
     Stack* stack = createStack();
 
-    while (*temp != '\0') {
+    while (*temp != '\0') { // O (n)
         push(stack, *temp);
         temp = temp + 1;
     };
 
     temp = str;
 
-    while (*temp != '\0') {
+    while (*temp != '\0') { // O (n)
         *temp = stack->top->data;
         pop(stack);
         temp = temp + 1;
     };
+
+    free(stack);
 };
+
+// função que checa se uma string contém aberturas e fechamentos de parenteses corretos
+int isBalanced(char* str) {
+    Stack* stack = createStack();
+    char* temp = str;
+
+    while (*temp != '\0') { // percorre todos os chars da string
+        if (*temp == '(' || *temp == '[' || *temp == '{') { // se o char for um char de abertura de parentêses, coloca na stack
+            push(stack, *temp);
+        } 
+        else if (*temp == ')' || *temp == ']' || *temp == '}') { // caso seja de fechamento, faz:
+
+            // caso 1: se a stack está vazia quer dizer que não existe parentêses nenhum de abertura anterior, ou seja, não está balanceado
+            if (isEmpty(stack)) { 
+                free(stack);
+                return 0;
+            }
+
+            // caso 2: existe uma abertura mas não combina com o fechamento atual, não está balanceado
+            if ((stack->top->data == '(' && *temp != ')') || (stack->top->data == '[' && *temp != ']') || (stack->top->data == '{' && *temp != '}')) {
+                free(stack);
+                return 0;
+            }
+
+            // caso 3: está tudo correto e balanceado, limpa a pilha e continua percorrendo a lista.
+            pop(stack);
+        };
+        temp = temp + 1;
+    };
+
+    if (stack->top != NULL) { // caso 4: percorreu a lista inteira e há um parenteses dentro da stack (abriu mas não achou fechamento)
+        free(stack);
+        return 0;
+    }
+
+    free(stack);
+    return 1;
+};
+
 
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
@@ -164,7 +206,7 @@ int main(int argc, char *argv[]) {
     printf("Deletando stack e liberando memória...\n\n\n");
     freeStack(stack);
 
-    /* exemplo 1: Invertendo uma string com stack*/
+    /* exemplo 2: Invertendo uma string com stack */
 
     char str[] = "Ola, Mundo!";
 
@@ -174,7 +216,19 @@ int main(int argc, char *argv[]) {
     printf("Reversing...\n");
     
     reverseString(&str[0]);
-    printf("Reversed String: %s\n\n", str);
+    printf("Reversed String: %s\n\n\n", str);
+    
+    /* exemplo 3: Avaliando prefixos de expressão com parentêses (),[],{}
+        essa função checa se todos os parentêses no texto estão fechando corretamente */
 
+    char expression[] = "In the realm of {curiosity}, where [ideas] echo within (minds), there exists a pattern: {[ (dreams + doubts) * (hope - fear) ] / (time + effort)}.\n\n Every step {forward} feels like (progress), even if [uncertain]. The key lies in balancing { [ (courage) + (patience) ] } with (persistence).";
+    
+    printf("Balanced Text Function Test\n\n");
+    printf("String: %s\n\n", expression);
+
+    printf("Testing...\n");
+
+    printf("Result isBalanced (1 = true | 0 = false): %i\n\n\n", isBalanced(expression));
+    
     return 0;
 }
