@@ -82,10 +82,6 @@ void freeStack(Stack* stack) {
     }
 };
 
-
-/* FUNÇÕES UTEIS COM STACK */
-
-
 /* FUNÇÕES DE AVALIAÇÃO DE EXPRESSOES PREFIX E SUFIX COM STACK */
 
 // int -> o tipo do retorno da função
@@ -149,6 +145,5 @@ int main(int argc, char *argv[]) {
     printf("Deletando stack e liberando memória...\n\n\n");
     freeStack(stack);
 
-    /* exemplo 1: Invertendo uma string com stack*/
     return 0;
 }

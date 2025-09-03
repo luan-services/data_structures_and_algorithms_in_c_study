@@ -86,8 +86,6 @@ void freeStack(Stack* stack) {
 /* FUNÇÕES UTEIS COM STACK */
 
 
-/* FUNÇÕES DE AVALIAÇÃO DE EXPRESSOES PREFIX E SUFIX COM STACK */
-
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
 // char *argv[] -> array contendo os argumentos, argv[0] sempre será o nome do programa, ex: argv[0] = test, argv[1] = OI, argv[2] = eu
@@ -150,5 +148,6 @@ int main(int argc, char *argv[]) {
     freeStack(stack);
 
     /* exemplo 1: Invertendo uma string com stack*/
+
     return 0;
 }
