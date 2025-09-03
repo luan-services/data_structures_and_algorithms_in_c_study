@@ -84,6 +84,61 @@ void freeStack(Stack* stack) {
 
 /* FUNÇÕES DE AVALIAÇÃO DE EXPRESSOES PREFIX E SUFIX COM STACK */
 
+// função para resolver expressões númericas usando a notação Polonesa
+int evaluatePrefix(char* expression, int total_strings) {
+    Stack* stack = createStack();
+
+    // total_strings é o total de operadores e números que há na operação, ex: * + 2 3 4 -> total_strings = 5
+
+    // isso é um array de endereços de strings, que vai salvar o endereço inicial de cada string da expressão, é como se fosse um array apontando
+    // pro primeiro char de cada string, dessa forma, é possível percorrer as strings char por char até ler elas completamente.
+    // precisamos salvar dessa forma pois a função prefix percorre o array do fim até o início, pra isso precisamos ler os valores de trás para frente
+    char* tokens[total_strings];
+    int tokenCount = 0;
+    
+    // a função strtok é como um cut para substrings, ela pega salva o endereço do primeiro char, percorre até achar " ", quando acha troca
+    // o " " por "\0", dessa forma quando percorremos esse endereço meio que só lemos até o " ", como se fosse um pop. ela também sabe exatamente
+    // onde fez a troca, então se chamamos ela de novo, ela recomeça de lá e faz 'cut' na próxima substring
+    char* token = strtok(expression, " "); 
+
+    // essa função é responsável por salvar os endereços[0] de todas as substrings da expressão, no array de endereços 'tokens'
+    while (token != NULL && tokenCount < total_strings) { 
+        tokens[tokenCount++] = token;
+        token = strtok(NULL, " ");
+    };
+
+    // agora que já temos todos os endereços, vamos percorre-los de trás para frente (é como percorrer a expressão de trás pra frente)
+    for (int i = tokenCount - 1; i >= 0; i--) {
+        char* currentToken = tokens[i];
+
+        // caso 1: se o token atual é um número envia ele pra stack
+        if (isdigit(currentToken[0]) || (strlen(currentToken) > 1 && currentToken[0] == '-')) {
+            push(stack, atoi(currentToken));
+        } 
+        else { // caso 2: o token é um operador
+            
+            int operand1 = stack->top->data; 
+            pop(stack);
+            int operand2 = stack->top->data;
+            pop(stack);
+
+            switch (currentToken[0]) {
+                case '+': push(stack, operand1 + operand2); break;
+                case '-': push(stack, operand1 - operand2); break;
+                case '*': push(stack, operand1 * operand2); break;
+                case '/': push(stack, operand1 / operand2); break;
+                default:
+                    printf("Erro: Operador '%s' desconhecido.\n", currentToken);
+                    exit(1);
+            }
+        }
+    }
+    
+    freeStack(stack);
+
+    return stack->top->data;
+}
+
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
 // char *argv[] -> array contendo os argumentos, argv[0] sempre será o nome do programa, ex: argv[0] = test, argv[1] = OI, argv[2] = eu
