@@ -119,10 +119,10 @@ int evaluatePrefix(char* expression, int total_strings) {
         else { // caso 2: o token é um operador
             
             // ex: * + 2 3 4
-            // a operação é feita ao contrário, os operadores precisam ser lidos da direita -> + = opr1, * = opr2
+            // a operação é feita ao contrário, os operadores precisam ser usados da direita -> + = opr1, * = opr2
             // porém os operando precisam ser usados na ordem certa -> 2 = op1, 3 = op2, 4 = op3
 
-            // na stack eles entram como pois são lidos da direita p esquerda 4 -> 3 -> 2 sendo 2 o last in porque a ordem que os valores 
+            // na stack eles são lidos da direita p esquerda 4 -> 3 -> 2 sendo 2 o last in porque a ordem que os valores 
             // são lidos e enviados p stack é da direita para a esquerda, então acaba que na hora de dar pop, eles vêm na ordem necessária 
             // para realizar a operação (tudo certo)
             int operand1 = stack->top->data; 
@@ -145,6 +145,65 @@ int evaluatePrefix(char* expression, int total_strings) {
     int result = stack->top->data;
     freeStack(stack);
 
+    return result;
+}
+
+// função para resolver expressões matemáticas na notação polonêsa inversa
+int evaluatePostfix(char* exp) {
+    Stack* stack = createStack();
+
+    // a função strtok é como um cut para substrings, ela pega salva o endereço do primeiro char, percorre até achar " ", quando acha troca
+    // o " " por "\0", dessa forma quando percorremos esse endereço meio que só lemos até o " ", como se fosse um pop. ela também sabe exatamente
+    // onde fez a troca, então se chamamos ela de novo, ela recomeça de lá e faz 'cut' na próxima substring
+    char* token = strtok(exp, " ");
+
+    // aqui não precisamos guardar os tokens e lê-los da direita para a esquerda, podemos ler na direção normal, por isso podemos só ficar
+    // chamando token sempre
+    while (token != NULL) {
+
+        // caso 1: se o token atual é um número envia ele pra stack
+        if (isdigit(token[0]) || (token[0] == '-' && isdigit(token[1]))) {
+            push(stack, atoi(token));
+        } else {
+
+            // ex: "2 3 + 4 *"
+            // a operação é feita normalmente, os operadores precisam ser usados da esquerda -> + = opr1, * = opr2
+            // os operando também precisam ser usados da esquerda -> 2 = op1, 3 = op2, 4 = op3
+
+            // na stack eles são lidos da esquerda p direita 2 -> 3 -> 4 sendo 4 o last in porque a ordem que os valores 
+            // são lidos e enviados p stack é da direita para a esquerda, então acaba que na hora de dar pop, eles vêm na ordem contrário 
+            // para realizar a operação, por isso o operand2 precisam receber o valor do pop antes do operand1
+            int operand2 = stack->top->data;
+            pop(stack);
+            int operand1 = stack->top->data;
+            pop(stack);
+
+            // Realiza a operação correspondente.
+            switch (token[0]) {
+                case '+':
+                    push(stack, operand1 + operand2);
+                    break;
+                case '-':
+                    push(stack, operand1 - operand2);
+                    break;
+                case '*':
+                    push(stack, operand1 * operand2);
+                    break;
+                case '/':
+                    push(stack, operand1 / operand2);
+                    break;
+                default:
+                    printf("Operador inválido: %s\n", token);
+                    exit(1);
+            }
+        }
+        // pega o próximo token da string.
+        token = strtok(NULL, " ");
+    }
+
+    // No final, o resultado da expressão é o único elemento que resta na stack.
+    int result = stack->top->data;
+    freeStack(stack);
     return result;
 }
 
@@ -219,6 +278,16 @@ int main(int argc, char *argv[]) {
     printf("Solving: %s\n", mathExpression);
     int prefixResult = evaluatePrefix(mathExpression, 5);
     printf("Result: %d\n\n", prefixResult);
+
+
+    char mathExpressionTwo[] = "5 10 + 2 *";
+
+    printf("Testing evaluatePostfix()\n\n");
+
+    printf("Solving: %s\n", mathExpressionTwo);
+    int postfixResult = evaluatePostfix(mathExpressionTwo);
+    printf("Result: %d\n\n", postfixResult);
+
 
 
     return 0;
