@@ -103,7 +103,7 @@ void reverseString(char *str) { // O (n)
         temp = temp + 1;
     };
 
-    free(stack);
+    freeStack(stack);
 };
 
 // função que checa se uma string contém aberturas e fechamentos de parenteses corretos
@@ -119,13 +119,13 @@ int isBalanced(char* str) {
 
             // caso 1: se a stack está vazia quer dizer que não existe parentêses nenhum de abertura anterior, ou seja, não está balanceado
             if (isEmpty(stack)) { 
-                free(stack);
+                freeStack(stack);
                 return 0;
             }
 
             // caso 2: existe uma abertura mas não combina com o fechamento atual, não está balanceado
             if ((stack->top->data == '(' && *temp != ')') || (stack->top->data == '[' && *temp != ']') || (stack->top->data == '{' && *temp != '}')) {
-                free(stack);
+                freeStack(stack);
                 return 0;
             }
 
@@ -136,11 +136,11 @@ int isBalanced(char* str) {
     };
 
     if (stack->top != NULL) { // caso 4: percorreu a lista inteira e há um parenteses dentro da stack (abriu mas não achou fechamento)
-        free(stack);
+        freeStack(stack);
         return 0;
     }
 
-    free(stack);
+    freeStack(stack);
     return 1;
 };
 
