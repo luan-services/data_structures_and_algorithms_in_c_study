@@ -85,6 +85,23 @@ void freeStack(Stack* stack) {
 
 /* FUNÇÕES UTEIS COM STACK */
 
+void reverseString(char *str) {
+    char* temp = str;
+    Stack* stack = createStack();
+
+    while (*temp != '\0') {
+        push(stack, *temp);
+        temp = temp + 1;
+    };
+
+    temp = str;
+
+    while (*temp != '\0') {
+        *temp = stack->top->data;
+        pop(stack);
+        temp = temp + 1;
+    };
+};
 
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
@@ -110,7 +127,7 @@ int main(int argc, char *argv[]) {
     printf("Removing (pop()) last value from the stack... \n");
     pop(stack);
     
-    printf("Current top (peek()) of stack (last value): %c\n", peek(stack->top->data));
+    printf("Current top of stack (first value): %c\n", stack->top->data);
 
     printf("Pushing 'D' to the stack...\n");
     push(stack, 'D');
@@ -148,6 +165,16 @@ int main(int argc, char *argv[]) {
     freeStack(stack);
 
     /* exemplo 1: Invertendo uma string com stack*/
+
+    char str[] = "Ola, Mundo!";
+
+    printf("Reverse String Function Test\n\n");
+    printf("String: %s\n", str);
+
+    printf("Reversing...\n");
+    
+    reverseString(&str[0]);
+    printf("Reversed String: %s\n\n", str);
 
     return 0;
 }
