@@ -42,6 +42,41 @@ Stack* createStack() {
     return stack;
 };
 
+void push(Stack* stack, int data) {
+    Node* node = (Node*) malloc(sizeof(Node));
+    if (node == NULL) {
+        printf("Error: Memory allocation for linked list failed.\n");
+        exit(1);
+    };
+
+    node->data = data; // coloca o dado no nó
+    node->next = stack->top; // o próximo endereço do nó é o top da stack (o nó vira o novo topo)
+    
+    stack->top = node; // retorna o nó (novo topo)
+};
+
+void pop(Stack* stack) {
+    if (stack->top == NULL) {
+        return;
+    }
+    Node* temp = stack->top;
+    stack->top = stack->top->next;
+    free(temp);
+};
+
+int isEmpty(Stack* stack) {
+    if (stack->top == NULL) {
+        return 1;
+    }
+    return 0;
+}
+
+
+/* FUNÇÕES UTEIS COM STACK */
+
+
+/* FUNÇÕES DE AVALIAÇÃO DE EXPRESSOES PREFIX E SUFIX COM STACK */
+
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
 // char *argv[] -> array contendo os argumentos, argv[0] sempre será o nome do programa, ex: argv[0] = test, argv[1] = OI, argv[2] = eu
