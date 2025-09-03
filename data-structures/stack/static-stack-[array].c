@@ -20,24 +20,52 @@ existem dois tipos de pilhas: estáticas (feita de arrays) e dinâmicas (feita d
 /*
 a pilha do exemplo abaixo é feita num array, ou seja, é uma pilha estática, ela possui uma implementação mais simples e direta, porém não 
 tem tamanho variável, existe um limite para o tamanho dela que precisa ser pré-definido, e caso ela não ocupe todo o espaço, isso causa um
-disperdício de alocação de memória */
+disperdício de alocação de memória 
 
-int isFull(int top, int size) {
+!!! stacks estáticas são feitas diretamente no código e pelo fato de terem valor fisíco, não é possível nem útil criar o arquivo para ser uma
+library de stacks, por isso não definiremos um struct */
+
+int isEmpty(int top) { // O (1)
+    if (top <= -1) {
+        return 1;
+    }
+    return 0;
+};
+
+int isFull(int top, int size) { // O (1)
     if (top + 1 == size ) {
         return 1;
     }
     return 0;
-}
+};
 
-void push(int* stack, int data, int top, int size) {
-    if (isFull(top, size)) {
+void push(int* stack, int data, int *top, int size) { // O (1)
+    if (isFull(*top, size)) {
         printf("Erro: Estouro da pilha (Stack Overflow)\n");
         return;
     };
-    top = top + 1;
-    *(stack + top) = data;
+    *top = *top + 1;
+    *(stack + *top) = data;
 };
 
+// pop não remove itens já colocados, ele apenas define um topo novo, assim o item nunca será acessado, e ao colocar algo na stack, ele será
+// sobrescrito
+void pop(int *top) {  // O (1)
+    if (isEmpty(*top)) {
+        printf("Erro: A pilha está vazia (Stack Underflow)\n");
+        return;
+    };
+    (*top) --;
+};
+
+// peek ou (top) é uma função para ver o valor do topo da stack
+int peek(int* stack, int top) {
+    if (isEmpty(top)) {
+        printf("Erro: A pilha está vazia (Stack Underflow)\n");
+        return -1;
+    };
+    return stack[top];
+}
 
 // int -> o tipo do retorno da função
 // int argc -> int que representa a qtd de argumentos passados ao rodar o código, ex no terminal roda: test.exe "OI" "eu", resultado será 2
@@ -48,7 +76,6 @@ int main(int argc, char *argv[]) {
     int stack[size]; // se implementa dessa forma, criando um array vazio com espaço para n elementos.
     int top = -1; // precisa criar um int para sinalizar qual index do array é o topo da lista (o index do último valor inserido)
     // o topo precisa sendo -1 indica que não há nenhum valor adicionado à pilha
-
 
     return 0;
 
