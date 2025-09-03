@@ -25,7 +25,7 @@ natureza ordenada da linked list para fazer o TOP (ultimo valor), ser o head da 
 ao início da lista [O (1)] */
 
 typedef struct Node { // cria um nó da linked list, data será um int
-    char data;
+    int data;
     struct Node* next;
 } Node;
 
@@ -43,7 +43,7 @@ Stack* createStack() {
     return stack;
 };
 
-void push(Stack* stack, char data) {
+void push(Stack* stack, int data) {
     Node* node = (Node*) malloc(sizeof(Node));
     if (node == NULL) {
         printf("Error: Memory allocation for linked list failed.\n");
@@ -101,50 +101,50 @@ int main(int argc, char *argv[]) {
     printf("Testing stack -> 1 = yes | 0 = no\n\n");
     printf("Stack is empty? %i\n", isEmpty(stack));
     
-    printf("Pushing 'a' to the stack...\n");
-    push(stack, 'a');
+    printf("Pushing 13 to the stack...\n");
+    push(stack, 13);
 
-    printf("Pushing 'B' to the stack...\n");
-    push(stack, 'B');
+    printf("Pushing 27 to the stack...\n");
+    push(stack, 27);
 
-    printf("Current top of stack (first value): %c\n", stack->top->data);
+    printf("Current top of stack (first value): %i\n", stack->top->data);
 
     printf("Removing (pop()) last value from the stack... \n");
     pop(stack);
     
-    printf("Current top (peek()) of stack (last value): %c\n", peek(stack->top->data));
+    printf("Current top (peek()) of stack (last value): %i\n", peek(stack->top->data));
 
-    printf("Pushing 'D' to the stack...\n");
-    push(stack, 'D');
+    printf("Pushing 7 to the stack...\n");
+    push(stack, 7);
 
-    printf("Pushing 'c' to the stack...\n");
-    push(stack, 'c');
+    printf("Pushing 21 to the stack...\n");
+    push(stack, 21);
 
-    printf("Pushing 'k' to the stack...\n");
-    push(stack, 'k');
+    printf("Pushing 4 to the stack...\n");
+    push(stack, 4);
 
-    printf("Pushing '7' to the stack...\n");
-    push(stack, '7');
+    printf("Pushing 72 to the stack...\n");
+    push(stack, 72);
 
-    printf("Pushing 'k' to the stack...\n");
-    push(stack, 'k');
+    printf("Pushing 9 to the stack...\n");
+    push(stack, 9);
 
-    printf("Pushing 'm' to the stack...\n");
-    push(stack, 'm');
+    printf("Pushing 0 to the stack...\n");
+    push(stack, 0);
 
-    printf("Pushing 'j' to the stack...\n");
-    push(stack, 'j');
+    printf("Pushing 14 to the stack...\n");
+    push(stack, 14);
 
-    printf("Pushing 'o' to the stack...\n");
-    push(stack, 'o');
+    printf("Pushing 60 to the stack...\n");
+    push(stack, 60);
     
-    printf("Pushing 'm' to the stack...\n");
-    push(stack, 'm');
+    printf("Pushing 103 to the stack...\n");
+    push(stack, 103);
 
     printf("Stack is full? No, dynamic stacks has no size limit.\n");
 
-    printf("Pushing 'z' to the stack...\n");
-    push(stack, 'z');
+    printf("Pushing 666 to the stack...\n");
+    push(stack, 666);
 
     printf("Deletando stack e liberando memória...\n\n\n");
     freeStack(stack);
