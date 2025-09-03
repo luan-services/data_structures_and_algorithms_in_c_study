@@ -7,6 +7,7 @@
 
 #include <stdlib.h> // necessário para tratar ponteiros com funções malloc, free, calloc, realloc, etc.
 
+#include <ctype.h> // necessário para usar função isdigit()
 
 /* uma pilha é uma coleção de elementos na qual a adição de um novo elemento e a remoção de um elemento existente ocorrem sempre na mesma 
 extremidade. Essa extremidade é comumente chamada de topo da pilha.
@@ -117,6 +118,13 @@ int evaluatePrefix(char* expression, int total_strings) {
         } 
         else { // caso 2: o token é um operador
             
+            // ex: * + 2 3 4
+            // a operação é feita ao contrário, os operadores precisam ser lidos da direita -> + = opr1, * = opr2
+            // porém os operando precisam ser usados na ordem certa -> 2 = op1, 3 = op2, 4 = op3
+
+            // na stack eles entram como pois são lidos da direita p esquerda 4 -> 3 -> 2 sendo 2 o last in porque a ordem que os valores 
+            // são lidos e enviados p stack é da direita para a esquerda, então acaba que na hora de dar pop, eles vêm na ordem necessária 
+            // para realizar a operação (tudo certo)
             int operand1 = stack->top->data; 
             pop(stack);
             int operand2 = stack->top->data;
@@ -134,9 +142,10 @@ int evaluatePrefix(char* expression, int total_strings) {
         }
     }
     
+    int result = stack->top->data;
     freeStack(stack);
 
-    return stack->top->data;
+    return result;
 }
 
 // int -> o tipo do retorno da função
@@ -163,7 +172,7 @@ int main(int argc, char *argv[]) {
     printf("Removing (pop()) last value from the stack... \n");
     pop(stack);
     
-    printf("Current top (peek()) of stack (last value): %i\n", peek(stack->top->data));
+    printf("Current top (peek()) of stack (last value): %i\n", stack->top->data);
 
     printf("Pushing 7 to the stack...\n");
     push(stack, 7);
@@ -199,6 +208,18 @@ int main(int argc, char *argv[]) {
 
     printf("Deletando stack e liberando memória...\n\n\n");
     freeStack(stack);
+
+    
+    /* exemplo 2: resolvendo expressões númericas com notação polonesa */
+
+    char mathExpression[] = "* + 5 10 2";
+
+    printf("Testing evaluatePrefix()\n\n");
+
+    printf("Solving: %s\n", mathExpression);
+    int prefixResult = evaluatePrefix(mathExpression, 5);
+    printf("Result: %d\n\n", prefixResult);
+
 
     return 0;
 }
